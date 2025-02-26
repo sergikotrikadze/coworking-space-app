@@ -3,6 +3,7 @@ package coworking.space.menus;
 import coworking.space.entities.Workspace;
 import coworking.space.repository.ReservationRepository;
 import coworking.space.repository.WorkspaceRepository;
+import coworking.space.exceptions.DataAccessException;
 
 import java.util.Scanner;
 import java.util.Set;
@@ -69,6 +70,11 @@ public class AdminMenu {
         workspace.setPrice(price);
         workspaceRepository.addWorkspace(workspace);
         System.out.println("Workspace added: " + workspace);
+        try {
+            workspaceRepository.saveSpacesToFile("workspaces.txt");
+        } catch (DataAccessException e) {
+            System.out.println("Error saving workspace state: " + e.getMessage());
+        }
     }
 
     private void removeWorkspace() {
@@ -83,7 +89,8 @@ public class AdminMenu {
         try {
             workspaceRepository.deleteWorkspaceById(id);
             System.out.println("Workspace removed.");
-        } catch (IllegalArgumentException e) {
+            workspaceRepository.saveSpacesToFile("workspaces.txt");
+        } catch (IllegalArgumentException | DataAccessException e) {
             System.out.println(e.getMessage());
         }
     }

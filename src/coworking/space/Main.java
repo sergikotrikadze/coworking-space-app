@@ -3,6 +3,7 @@ package coworking.space;
 import coworking.space.entities.User;
 import coworking.space.entities.Workspace;
 import coworking.space.entities.WorkspaceType;
+import coworking.space.exceptions.DataAccessException;
 import coworking.space.menus.AccountCreationMenu;
 import coworking.space.menus.AdminMenu;
 import coworking.space.menus.CustomerMenu;
@@ -22,16 +23,25 @@ public class Main {
         WorkspaceRepository workspaceRepository = new WorkspaceRepository();
         ReservationRepository reservationRepository = new ReservationRepository();
 
-        // Prepopulate some workspaces
-        Workspace ws1 = new Workspace();
-        ws1.setWorkspaceType(WorkspaceType.OPEN_SPACE);
-        ws1.setPrice(25.0);
-        workspaceRepository.addWorkspace(ws1);
+        
+        try {
+            workspaceRepository.loadSpacesFromFile("workspaces.txt");
+        } catch (DataAccessException e) {
+            System.out.println("Error loading spaces: " + e.getMessage());
+        }
 
-        Workspace ws2 = new Workspace();
-        ws2.setWorkspaceType(WorkspaceType.PRIVATE_ROOM);
-        ws2.setPrice(50.0);
-        workspaceRepository.addWorkspace(ws2);
+        
+        if (workspaceRepository.getOnlyAvailableSpaces().isEmpty()) {
+            Workspace ws1 = new Workspace();
+            ws1.setWorkspaceType(WorkspaceType.OPEN_SPACE);
+            ws1.setPrice(25.0);
+            workspaceRepository.addWorkspace(ws1);
+
+            Workspace ws2 = new Workspace();
+            ws2.setWorkspaceType(WorkspaceType.PRIVATE_ROOM);
+            ws2.setPrice(50.0);
+            workspaceRepository.addWorkspace(ws2);
+        }
 
         boolean running = true;
         while (running) {
@@ -82,6 +92,13 @@ public class Main {
                 default:
                     System.out.println("Invalid option. Try again.");
             }
+        }
+
+        
+        try {
+            workspaceRepository.saveSpacesToFile("workspaces.txt");
+        } catch (DataAccessException e) {
+            System.out.println("Error saving workspace state on exit: " + e.getMessage());
         }
         scanner.close();
     }

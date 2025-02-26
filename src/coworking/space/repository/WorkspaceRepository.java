@@ -20,22 +20,22 @@ public class WorkspaceRepository {
 
     public Workspace getWorkspaceById(long id) {
         return workspaces.stream()
-                .filter(a -> a.getId() == id)
+                .filter(w -> w.getId() == id)
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("no such workspace"));
+                .orElseThrow(() -> new IllegalArgumentException("No such workspace"));
     }
-    
+
     public void deleteWorkspaceById(long id) {
         Workspace workspace = workspaces.stream()
-                .filter(a -> a.getId() == id)
+                .filter(w -> w.getId() == id)
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("no such workspace"));
+                .orElseThrow(() -> new IllegalArgumentException("No such workspace"));
         workspaces.remove(workspace);
     }
 
     public Set<Workspace> getOnlyAvailableSpaces() {
         return workspaces.stream()
-                .filter(a -> a.isAvailable()).collect(Collectors.toSet());
+                .filter(Workspace::isAvailable)
+                .collect(Collectors.toSet());
     }
-
 }

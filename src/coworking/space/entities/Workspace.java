@@ -3,23 +3,22 @@ package coworking.space.entities;
 import java.util.Objects;
 
 public class Workspace {
-    
+
     private long id;
     private WorkspaceType workspaceType;
     private double price;
     private boolean available;
     private static long autoImplementedId = 1;
-    
+
     public Workspace() {
         available = true;
-        id = autoImplementedId;
-        autoImplementedId++;
+        id = autoImplementedId++;
     }
 
     public long getId() {
         return id;
     }
-    
+
     public WorkspaceType getWorkspaceType() {
         return workspaceType;
     }
@@ -48,8 +47,8 @@ public class Workspace {
     public String toString() {
         return "Workspace{" +
                 "id=" + id +
-                ", workspaceType=" + workspaceType +
-                ", price=" + price +
+                ", type=" + workspaceType +
+                ", price=$" + price +
                 ", available=" + available +
                 '}';
     }

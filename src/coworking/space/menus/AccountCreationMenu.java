@@ -32,3 +32,4 @@ public class AccountCreationMenu {
         throw new IllegalArgumentException("Invalid admin key!");
     }
 }
+//

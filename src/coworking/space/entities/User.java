@@ -3,16 +3,15 @@ package coworking.space.entities;
 import java.util.Objects;
 
 public class User {
-    
+
     private long id;
     private String login;
     private String password;
     private UserRole userRole;
     private static long autoImplementedId = 1;
-    
+
     public User() {
-        this.id = autoImplementedId;
-        autoImplementedId++;
+        this.id = autoImplementedId++;
     }
 
     public long getId() {
@@ -45,10 +44,10 @@ public class User {
 
     @Override
     public String toString() {
-        return "Customer{" +
+        return "User{" +
                 "id=" + id +
                 ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
+                ", userRole=" + userRole +
                 '}';
     }
 
